@@ -31,6 +31,16 @@ class UsuarioCPFForm(UserCreationForm):
             raise forms.ValidationError("Este nome de usuário já está em uso.")
         return username
 
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.cpf = self.cleaned_data['cpf']
+        user.first_name = self.cleaned_data['first_name']
+        user.email = self.cleaned_data['email']
+        user.username = self.cleaned_data['username']
+        if commit:
+            user.save()
+        return user
+
 
 class LoginCPFForm(forms.Form):
     cpf = forms.CharField(label='CPF')
@@ -43,10 +53,12 @@ class LoginCPFForm(forms.Form):
 
         try:
             user = Usuario.objects.get(cpf=cpf)
+            print("Usuário encontrado:", user.username)
         except Usuario.DoesNotExist:
             raise forms.ValidationError("CPF não encontrado.")
 
         user = authenticate(username=user.username, password=password)
+        print("Resultado do authenticate:", user)
 
         if user is None:
             raise forms.ValidationError("CPF ou senha incorretos.")
