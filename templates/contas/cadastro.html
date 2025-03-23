@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Cadastro de Usuário
+{% endblock title %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="card shadow" style="width: 100%; max-width: 500px;">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">Cadastro de Usuário</h3>
+
+            <form class="row g-3"method="post" novalidate>
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="col-md-5">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% if field.errors %}
+                            <small class="text-danger">{{ field.errors|striptags }}</small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                <button type="submit" class="btn btn-success w-100">Cadastrar</button>
+            </form>
+
+            <hr>
+            <p class="text-center">
+                <a href="{% url 'login_cpf' %}">Já tenho uma conta</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    Login com CPF
+{% endblock title %}
+{% block content %}
+<div class="card mx-auto" style="max-width: 400px;">
+    <div class="card-body">
+        <h3 class="card-title text-center mb-4">Login com CPF</h3>
+
+
+        <form class="row g-3" method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="col-md-6">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <div class="text-danger">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <hr>
+            <button type="submit" class="btn btn-primary w-100">Entrar</button>
+        </form>
+
+        <hr>
+        <p class="text-center"><a href="{% url 'cadastro_usuario' %}">Não tem conta? Cadastre-se</a></p>
+        <p class="text-center"><a href="{% url 'password_reset' %}">Esqueceu a senha?</a></p>
+    </div>
+</div>
+{% endblock %}
